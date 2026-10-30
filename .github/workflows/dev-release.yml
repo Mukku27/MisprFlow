@@ -57,6 +57,7 @@ jobs:
         env:
           CERTIFICATE_BASE64: ${{ secrets.DEVELOPER_ID_CERTIFICATE_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           CERTIFICATE_PATH="$RUNNER_TEMP/developer_id.p12"
           KEYCHAIN_PATH="$RUNNER_TEMP/signing.keychain-db"
@@ -66,7 +67,7 @@ jobs:
           # do not inherit secrets). Without this, `security import` fails
           # cryptically with "Unable to decode the provided data".
           if [[ -z "${CERTIFICATE_BASE64:-}" ]]; then
-            echo "::error::Missing DEVELOPER_ID_CERTIFICATE_BASE64 secret. Export the Developer ID .p12 as base64 and set it with: base64 -i certificate.p12 | pbcopy && gh secret set DEVELOPER_ID_CERTIFICATE_BASE64 --repo \"$GITHUB_REPOSITORY\""
+            echo "::error::Missing DEVELOPER_ID_CERTIFICATE_BASE64 secret. Export the Developer ID identity (certificate AND private key) as a .p12 and set it with: base64 -i certificate.p12 | gh secret set DEVELOPER_ID_CERTIFICATE_BASE64 --repo \"$GITHUB_REPOSITORY\""
             exit 1
           fi
           if [[ -z "${CERTIFICATE_PASSWORD:-}" ]]; then
@@ -89,7 +90,10 @@ jobs:
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
-          # Import certificate and delete .p12 from disk immediately
+          # Import the identity and delete the .p12 from disk immediately.
+          # The .p12 must contain BOTH the Developer ID Application
+          # certificate and its private key. A key-only .p12 imports without
+          # error but yields no usable signing identity.
           security import "$CERTIFICATE_PATH" \
             -P "$CERTIFICATE_PASSWORD" \
             -A \
@@ -105,8 +109,28 @@ jobs:
           # Add temporary keychain to search list
           security list-keychains -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
 
-          # Extract signing identity
-          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          # Require a valid "Developer ID Application" identity. Without this
+          # check a key-only .p12 silently sets CODESIGN_IDENTITY to
+          # "0 valid identities found" and fails later inside codesign.
+          IDENTITY="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" \
+            | sed -n 's/^[[:space:]]*[0-9][0-9]*) [0-9A-F]\{40\} "\(Developer ID Application: .*\)"[[:space:]]*$/\1/p' \
+            | head -1)"
+          if [[ -z "$IDENTITY" ]]; then
+            echo "::error::No valid Developer ID Application identity was imported. DEVELOPER_ID_CERTIFICATE_BASE64 must be a .p12 containing the certificate AND its private key. Export the identity from Keychain Access (My Certificates), not just the key."
+            echo "Matching code-signing identities, including invalid ones:"
+            security find-identity -p codesigning "$KEYCHAIN_PATH" || true
+            echo "Developer ID certificates in the temporary keychain:"
+            security find-certificate -a -c "Developer ID Application" -p "$KEYCHAIN_PATH" \
+              | openssl x509 -noout -subject -issuer -dates || true
+            exit 1
+          fi
+
+          CERT_TEAM="$(printf '%s\n' "$IDENTITY" | sed -n 's/.*(\([A-Z0-9][A-Z0-9]*\))$/\1/p')"
+          if [[ -n "${APPLE_TEAM_ID:-}" && -n "$CERT_TEAM" && "$CERT_TEAM" != "$APPLE_TEAM_ID" ]]; then
+            echo "::error::Certificate team ($CERT_TEAM) does not match APPLE_TEAM_ID ($APPLE_TEAM_ID)."
+            exit 1
+          fi
+
           echo "CODESIGN_IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
           echo "Found signing identity: $IDENTITY"
@@ -117,6 +141,15 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
         run: |
+          if [[ -z "${APPLE_ID:-}" || -z "${APPLE_TEAM_ID:-}" || -z "${APPLE_APP_PASSWORD:-}" ]]; then
+            echo "::error::Missing notarization secrets. APPLE_ID, APPLE_TEAM_ID, and APPLE_APP_PASSWORD must all be set."
+            exit 1
+          fi
+
+          # A 401 "Apple ID has been locked" here is an account-state problem.
+          # Unlock the account at https://iforgot.apple.com, then create a new
+          # app-specific password at https://appleid.apple.com and update the
+          # APPLE_APP_PASSWORD secret before re-running the workflow.
           xcrun notarytool store-credentials "notarytool-profile" \
             --apple-id "$APPLE_ID" \
             --team-id "$APPLE_TEAM_ID" \
