@@ -1,0 +1,4 @@
+interface:
+  display_name: "MisprFlow Release"
+  short_description: "Prepare and publish MisprFlow semver releases."
+  default_prompt: "Prepare a new MisprFlow release."
