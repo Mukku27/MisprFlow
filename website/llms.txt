@@ -2,7 +2,7 @@
 
 Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.
 
-Download: https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg
+Download: https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg
 
 Agent Task: speak a task and the app pastes a finished draft. The draft is grounded in the frontmost app and a screenshot. The model returns only the text to paste.
 
@@ -12,4 +12,4 @@ Agent mode uses the model you configure. There is no Mispr Flow account.
 
 There is no Mispr Flow server. Audio and text go only to the transcription and model provider you configure.
 
-License: https://github.com/Mukku27/misprflow/blob/main/LICENSE
+License: https://github.com/Mukku27/MisprFlow/blob/main/LICENSE

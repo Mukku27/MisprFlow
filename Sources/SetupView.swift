@@ -54,7 +54,7 @@ struct SetupView: View {
     var onComplete: () -> Void
     @EnvironmentObject var appState: AppState
     @Environment(\.openURL) private var openURL
-    private let misprflowRepoURL = URL(string: "https://github.com/Mukku27/misprflow")!
+    private let misprflowRepoURL = URL(string: "https://github.com/Mukku27/MisprFlow")!
     private enum SetupStep: Int, CaseIterable {
         case welcome = 0
         case apiKey
@@ -305,7 +305,7 @@ struct SetupView: View {
                     Button {
                         openURL(misprflowRepoURL)
                     } label: {
-                        Text("Mukku27/misprflow")
+                        Text("Mukku27/MisprFlow")
                             .font(MFFont.mono(.caption, weight: .medium))
                     }
                     .buttonStyle(.plain)
@@ -1447,7 +1447,7 @@ class GitHubMetadataCache: ObservableObject {
 
     private var lastFetchDate: Date?
     private let cacheDuration: TimeInterval = 5 * 60 // 5 minutes
-    private let repoAPIURL = URL(string: "https://api.github.com/repos/Mukku27/misprflow")!
+    private let repoAPIURL = URL(string: "https://api.github.com/repos/Mukku27/MisprFlow")!
 
     private init() {}
 
@@ -1471,7 +1471,7 @@ class GitHubMetadataCache: ObservableObject {
             if count > 0 {
                 let perPage = 100
                 let lastPage = max(1, Int(ceil(Double(count) / Double(perPage))))
-                let stargazersURL = URL(string: "https://api.github.com/repos/Mukku27/misprflow/stargazers?per_page=\(perPage)&page=\(lastPage)")!
+                let stargazersURL = URL(string: "https://api.github.com/repos/Mukku27/MisprFlow/stargazers?per_page=\(perPage)&page=\(lastPage)")!
                 var request = URLRequest(url: stargazersURL)
                 request.setValue("application/vnd.github.v3.star+json", forHTTPHeaderField: "Accept")
                 let starredResult = try await URLSession.shared.data(for: request)
@@ -1483,7 +1483,7 @@ class GitHubMetadataCache: ObservableObject {
             }
 
             var contributors: [GitHubContributor] = []
-            let contributorsURL = URL(string: "https://api.github.com/repos/Mukku27/misprflow/contributors?per_page=15")!
+            let contributorsURL = URL(string: "https://api.github.com/repos/Mukku27/MisprFlow/contributors?per_page=15")!
             do {
                 let contributorsResult = try await URLSession.shared.data(from: contributorsURL)
                 if let contribHTTP = contributorsResult.1 as? HTTPURLResponse,

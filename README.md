@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://misprflow.vercel.app"><b>misprflow.vercel.app</b></a><br>
-  <a href="https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg"><b>Download MisprFlow.dmg</b></a><br>
+  <a href="https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg"><b>Download MisprFlow.dmg</b></a><br>
   <sub>Universal build for Apple silicon and Intel</sub>
 </p>
 
@@ -26,7 +26,7 @@ MisprFlow is a free Mac dictation app inspired by [Wispr Flow](https://wisprflow
 
 ## Quick Start
 
-1. Download the app from above or [click here](https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg)
+1. Download the app from above or [click here](https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg)
 2. Get a free Groq API key from [groq.com](https://groq.com/)
 3. Hold `Fn` to talk, or tap `Command-Fn` to start and stop dictation, and have whatever you say pasted into the current text field
 

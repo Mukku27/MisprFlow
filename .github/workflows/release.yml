@@ -47,7 +47,7 @@ jobs:
             echo
             echo "## Download"
             echo
-            echo "**[MisprFlow.dmg](https://github.com/Mukku27/misprflow/releases/download/${{ steps.version.outputs.tag }}/MisprFlow.dmg)** — Universal build for all Macs (Apple Silicon + Intel)."
+            echo "**[MisprFlow.dmg](https://github.com/Mukku27/MisprFlow/releases/download/${{ steps.version.outputs.tag }}/MisprFlow.dmg)** — Universal build for all Macs (Apple Silicon + Intel)."
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 

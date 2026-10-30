@@ -163,7 +163,7 @@ jobs:
           body: |
             Development build from `${{ github.sha }}`.
 
-            **[MisprFlow-Dev.dmg](https://github.com/Mukku27/misprflow/releases/download/${{ steps.version.outputs.tag }}/MisprFlow-Dev.dmg)** - Universal dev build for all Macs (Apple Silicon + Intel).
+            **[MisprFlow-Dev.dmg](https://github.com/Mukku27/MisprFlow/releases/download/${{ steps.version.outputs.tag }}/MisprFlow-Dev.dmg)** - Universal dev build for all Macs (Apple Silicon + Intel).
           generate_release_notes: false
           make_latest: false
           prerelease: true

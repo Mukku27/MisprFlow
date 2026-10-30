@@ -4,4 +4,4 @@ This directory is a static site. In Vercel, set the project root directory to `w
 
 The DMG is hosted on GitHub Releases, not in this folder:
 
-https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg
+https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg

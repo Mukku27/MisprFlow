@@ -12,7 +12,7 @@
   <meta name="theme-color" content="#FAF7EF" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="misprflow">
+  <meta property="og:site_name" content="MisprFlow">
   <meta property="og:title" content="Mispr Flow — free and fast Mac dictation">
   <meta property="og:description" content="Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.">
   <meta property="og:url" content="https://misprflow.vercel.app/">
@@ -207,11 +207,11 @@
   <header class="wrap topbar">
     <a class="brand" href="/">
       <img src="assets/app-icon.png" width="28" height="28" alt="Mispr Flow icon">
-      <span class="wordmark">misprflow</span>
+      <span class="wordmark">MisprFlow</span>
     </a>
     <nav class="nav">
-      <a href="https://github.com/Mukku27/misprflow">GitHub</a>
-      <a href="https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg">Download</a>
+      <a href="https://github.com/Mukku27/MisprFlow">GitHub</a>
+      <a href="https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg">Download</a>
     </nav>
   </header>
 
@@ -220,7 +220,7 @@
       <p class="kicker">macOS</p>
       <h1>Speak. It's already written.</h1>
       <p class="lede">Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.</p>
-      <a class="download" href="https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg">Download for Mac</a>
+      <a class="download" href="https://github.com/Mukku27/MisprFlow/releases/latest/download/MisprFlow.dmg">Download for Mac</a>
       <p class="meta">MisprFlow.dmg · Apple silicon and Intel · MIT <span id="release-tag"></span></p>
     </section>
 
@@ -281,13 +281,13 @@
   </main>
 
   <footer class="wrap">
-    <span>misprflow</span>
-    <a href="https://github.com/Mukku27/misprflow/blob/main/LICENSE">MIT License</a>
+    <span>MisprFlow</span>
+    <a href="https://github.com/Mukku27/MisprFlow/blob/main/LICENSE">MIT License</a>
   </footer>
 
   <script>
     const slot = document.querySelector("#release-tag");
-    fetch("https://api.github.com/repos/Mukku27/misprflow/releases/latest")
+    fetch("https://api.github.com/repos/Mukku27/MisprFlow/releases/latest")
       .then((response) => (response.ok ? response.json() : Promise.reject()))
       .then((release) => {
         if (release && release.tag_name) slot.textContent = "· " + release.tag_name;
