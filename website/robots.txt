@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://misprflow.vercel.app/sitemap.xml

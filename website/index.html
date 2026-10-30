@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mispr Flow — free and fast Mac dictation</title>
+  <meta name="description" content="Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="author" content="Mispr Flow">
+  <meta name="application-name" content="Mispr Flow">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FAF7EF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="misprflow">
+  <meta property="og:title" content="Mispr Flow — free and fast Mac dictation">
+  <meta property="og:description" content="Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.">
+  <meta property="og:url" content="https://misprflow.vercel.app/">
+  <meta property="og:image" content="https://misprflow.vercel.app/assets/app-icon.png">
+  <meta property="og:image:alt" content="Mispr Flow icon">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mispr Flow — free and fast Mac dictation">
+  <meta name="twitter:description" content="Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.">
+  <meta name="twitter:image" content="https://misprflow.vercel.app/assets/app-icon.png">
+  <link rel="icon" href="assets/app-icon.png">
+  <style>
+    :root {
+      --background: #FAF7EF;
+      --ink: #1C1B18;
+      --secondary: #6B675E;
+      --tertiary: #A8A29A;
+      --card: rgba(255, 255, 255, 0.72);
+      --border: rgba(28, 27, 24, 0.08);
+      --primary-fill: #6D5EF5;
+      --primary-text: #F7F4EC;
+      --accent: #6D5EF5;
+      --sidebar: #E3EEF3;
+      --waveform: #F5F1E3;
+      --overlay: #161513;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #161513;
+        --ink: #F5F1E3;
+        --secondary: #B8B2A5;
+        --tertiary: #8A8478;
+        --card: #21201C;
+        --border: rgba(255, 255, 255, 0.08);
+        --primary-fill: #A99BFF;
+        --primary-text: #1C1B18;
+        --accent: #A99BFF;
+        --sidebar: #1A262C;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--background);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+    h1, h2, .wordmark, .kicker {
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+    }
+    a { color: var(--ink); }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .wrap {
+      width: min(1040px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-right: auto;
+    }
+    .brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+    }
+    .wordmark { font-size: 18px; letter-spacing: -0.02em; }
+    .nav { display: flex; gap: 18px; }
+    .nav a { text-decoration: none; font-size: 15px; }
+    .hero { padding: 48px 0 28px; }
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--secondary);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 14ch;
+    }
+    .lede {
+      max-width: 38rem;
+      margin: 18px 0 0;
+      color: var(--secondary);
+      font-size: 19px;
+    }
+    .download {
+      display: inline-block;
+      margin-top: 28px;
+      background: var(--primary-fill);
+      color: var(--primary-text);
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-weight: 600;
+    }
+    .download:hover { filter: brightness(1.05); }
+    .meta {
+      margin: 12px 0 0;
+      color: var(--tertiary);
+      font-family: ui-monospace, "SF Mono", ui-monospace, monospace;
+      font-size: 13px;
+    }
+    .agent {
+      background: var(--sidebar);
+      padding: 56px 0;
+    }
+    .agent h2, .block h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+    }
+    .section-copy { margin: 0 0 22px; color: var(--secondary); max-width: 40rem; }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .card p, .note { margin: 0; color: var(--secondary); }
+    .note { margin-top: 16px; }
+    .block { padding: 56px 0; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step-no {
+      font-family: ui-monospace, "SF Mono", ui-monospace, monospace;
+      color: var(--accent);
+      font-size: 13px;
+    }
+    .rows { display: grid; gap: 0; }
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+    }
+    .row strong {
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .row span { color: var(--secondary); }
+    kbd {
+      font-family: ui-monospace, "SF Mono", ui-monospace, monospace;
+      font-size: 0.92em;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 40px;
+      color: var(--secondary);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    footer a { color: var(--secondary); }
+    @media (max-width: 720px) {
+      .cards, .steps, .row { grid-template-columns: 1fr; }
+      .row { gap: 4px; }
+      footer { flex-direction: column; }
+      h1 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <a class="brand" href="/">
+      <img src="assets/app-icon.png" width="28" height="28" alt="Mispr Flow icon">
+      <span class="wordmark">misprflow</span>
+    </a>
+    <nav class="nav">
+      <a href="https://github.com/Mukku27/misprflow">GitHub</a>
+      <a href="https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg">Download</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <p class="kicker">macOS</p>
+      <h1>Speak. It's already written.</h1>
+      <p class="lede">Mispr Flow is a free and fast dictation app for Mac, with agent mode. Hold a key, talk, and the text lands in the field you are using.</p>
+      <a class="download" href="https://github.com/Mukku27/misprflow/releases/latest/download/MisprFlow.dmg">Download for Mac</a>
+      <p class="meta">MisprFlow.dmg · Apple silicon and Intel · MIT <span id="release-tag"></span></p>
+    </section>
+
+    <section class="agent">
+      <div class="wrap">
+        <h2>Agent mode</h2>
+        <p class="section-copy">A spoken task becomes text in the field you are already using.</p>
+        <div class="cards">
+          <article class="card">
+            <h3>Agent Task</h3>
+            <p>Speak a task. The app pastes a finished draft. The draft is grounded in the frontmost app and a screenshot. The model returns only the text to paste.</p>
+          </article>
+          <article class="card">
+            <h3>Agent Edit</h3>
+            <p>Select text, speak the change, and the selection is replaced.</p>
+          </article>
+        </div>
+        <p class="note">Agent mode uses the model you configure. There is no Mispr Flow account.</p>
+      </div>
+    </section>
+
+    <section class="wrap block">
+      <h2>Three steps</h2>
+      <div class="steps">
+        <article class="card">
+          <p class="step-no">01</p>
+          <h3>Download the DMG</h3>
+          <p>Open <kbd>MisprFlow.dmg</kbd> and drag the app to Applications.</p>
+        </article>
+        <article class="card">
+          <p class="step-no">02</p>
+          <h3>Add a Groq key</h3>
+          <p>Create a free key at <a href="https://groq.com/">groq.com</a>.</p>
+        </article>
+        <article class="card">
+          <p class="step-no">03</p>
+          <h3>Talk</h3>
+          <p>Hold <kbd>Fn</kbd> to talk, or tap <kbd>Command-Fn</kbd> to start and stop.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap block">
+      <h2>Dictation</h2>
+      <div class="rows">
+        <div class="row"><strong>Custom shortcuts</strong><span>Hold to talk, or tap to toggle. A longer toggle can latch on from hold mode.</span></div>
+        <div class="row"><strong>Context-aware cleanup</strong><span>Nearby app context helps names, terms, and phrases come out spelled correctly.</span></div>
+        <div class="row"><strong>Custom vocabulary</strong><span>Keep the names and jargon you actually use.</span></div>
+        <div class="row"><strong>Voice macros</strong><span>A spoken command can paste text you defined ahead of time.</span></div>
+        <div class="row"><strong>Your own API base URL</strong><span>Groq is the default. Point transcription and chat at another compatible endpoint when you want to.</span></div>
+      </div>
+    </section>
+
+    <section class="wrap block">
+      <h2>Privacy</h2>
+      <p class="section-copy">There is no Mispr Flow server. Audio and text go only to the transcription and model provider you configure.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>misprflow</span>
+    <a href="https://github.com/Mukku27/misprflow/blob/main/LICENSE">MIT License</a>
+  </footer>
+
+  <script>
+    const slot = document.querySelector("#release-tag");
+    fetch("https://api.github.com/repos/Mukku27/misprflow/releases/latest")
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((release) => {
+        if (release && release.tag_name) slot.textContent = "· " + release.tag_name;
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
