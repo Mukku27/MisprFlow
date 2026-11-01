@@ -135,6 +135,8 @@ validate:
 	plutil -lint Info.plist MisprFlow.entitlements
 	@set -e; for script in $(SHELL_SCRIPTS); do bash -n "$$script"; done
 	@ruby -e 'require "yaml"; ARGV.each { |file| YAML.load_file(file) }' $(YAML_FILES)
+	bash .github/scripts/select-signing-identity-test.sh
+	bash .github/scripts/prepare-notarization-test.sh
 
 icon: $(ICON_ICNS)
 
